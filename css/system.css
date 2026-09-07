@@ -1,19 +1,31 @@
+/* Import Modern Clean Font */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* ==============================================
+   1. GLOBAL RESET & BASE STYLES
+   ============================================== */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
 }
 
 body {
+    font-family: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     background-color: #0b0f19;
     color: #e2e8f0;
     line-height: 1.6;
     overflow-x: hidden;
 }
 
-/* Start Keyframe Animations */
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
+/* ==============================================
+   2. KEYFRAME ANIMATIONS
+   ============================================== */
 @keyframes slowFlyFromLeft {
     0% {
         opacity: 0;
@@ -24,7 +36,6 @@ body {
         transform: translateX(0);
     }
 }
-
 
 @keyframes slowFlyFromRight {
     0% {
@@ -37,7 +48,6 @@ body {
     }
 }
 
-
 @keyframes slowSlideFromTop {
     0% {
         opacity: 0;
@@ -48,13 +58,15 @@ body {
         transform: translateY(0);
     }
 }
-/* End Keyframe Animations */
 
-/* Start Navbar */
+/* ==============================================
+   3. NAVBAR
+   ============================================== */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
     padding: 12px 48px;
     background-color: rgba(11, 15, 25, 0.85);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -64,7 +76,7 @@ body {
     backdrop-filter: blur(16px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
     width: 100%;
-    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    transition: box-shadow 0.4s ease, border-bottom-color 0.4s ease;
 }
 
 .navbar:hover {
@@ -72,82 +84,122 @@ body {
     border-bottom-color: rgba(250, 204, 21, 0.3);
 }
 
-
 .left-header {
     display: flex;
     align-items: center;
+    min-width: 0;
     gap: 28px;
     animation: slowFlyFromLeft 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Logo */
 .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 22px;
     font-weight: 800;
     color: #facc15;
-    text-decoration: none;
     letter-spacing: -0.5px;
-    transition: all 0.3s ease;
+    cursor: pointer;
+    will-change: transform, filter, text-shadow;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.logo i, .logo svg {
+    font-size: 18px;
+    color: #facc15;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .logo:hover {
-    text-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
-    transform: translateY(-1px);
+    color: #ffffff;
+    transform: translateY(-2px);
+    text-shadow: 0 0 16px rgba(250, 204, 21, 0.6), 0 0 25px rgba(250, 204, 21, 0.3);
 }
 
+.logo:hover i, .logo:hover svg {
+    color: #facc15;
+    transform: rotate(12deg) scale(1.15);
+}
+
+/* Search Bar */
 .search-container {
     position: relative;
     display: flex;
     align-items: center;
+    min-width: 0;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .search-input, 
 input[type="text"][placeholder*="Search"],
 .navbar input {
-    background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    padding: 8px 16px 8px 38px !important;
-    border-radius: 20px !important;
-    color: #f8fafc !important;
-    font-size: 13.5px !important;
-    width: 260px !important;
-    outline: none !important;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, width 0.3s ease !important;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 16px 8px 38px;
+    border-radius: 20px;
+    color: #f8fafc;
+    font-size: 13.5px;
+    width: 260px;
+    outline: none;
     will-change: transform, box-shadow;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, width 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #64748b;
 }
 
 .search-input:hover,
 input[type="text"][placeholder*="Search"]:hover,
 .navbar input:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(250, 204, 21, 0.5) !important;
-    transform: translateY(-2px) scale(1.02) !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(250, 204, 21, 0.25) !important;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(250, 204, 21, 0.5);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(250, 204, 21, 0.25);
 }
 
 .search-input:focus, 
 input[type="text"][placeholder*="Search"]:focus,
 .navbar input:focus {
-    background: rgba(255, 255, 255, 0.14) !important;
-    border-color: #facc15 !important;
-    width: 310px !important;
-    transform: translateY(-2px) scale(1.02) !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 20px rgba(250, 204, 21, 0.4) !important;
+    background: rgba(255, 255, 255, 0.14);
+    border-color: #facc15;
+    width: 310px;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 20px rgba(250, 204, 21, 0.4);
 }
 
+/* Navbar Buttons */
 .right-header {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     gap: 12px;
     animation: slowFlyFromRight 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .btn-login, .btn-register {
+    display: inline-block;
     padding: 8px 20px;
     border-radius: 10px;
-    text-decoration: none;
     font-size: 13.5px;
     font-weight: 600;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    cursor: pointer;
+    will-change: transform, box-shadow;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-login {
@@ -159,6 +211,9 @@ input[type="text"][placeholder*="Search"]:focus,
 .btn-login:hover {
     background: rgba(255, 255, 255, 0.12);
     color: #ffffff;
+    border-color: rgba(250, 204, 21, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(250, 204, 21, 0.25);
 }
 
 .btn-register {
@@ -170,29 +225,56 @@ input[type="text"][placeholder*="Search"]:focus,
 
 .btn-register:hover {
     background-color: #eab308;
+    border-color: #eab308;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
 }
-/* End Navbar */
 
-/* Start Hero Section */
+.badge-instructor {
+    background-color: #facc15;
+    color: #0b0f19;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.user-welcome {
+    color: #f8fafc;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* ==============================================
+   4. HERO SECTION
+   ============================================== */
 .hero-section {
     position: relative;
     width: 100%;
-    height: 320px;
+    min-height: 320px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 35px 20px;
 }
 
-.hero-section img, .hero-section video, .hero-media, .hero-video {
+.hero-section img, 
+.hero-section video, 
+.hero-media, 
+.hero-video {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
     filter: brightness(0.65) contrast(1.1);
     z-index: 1;
 }
@@ -218,34 +300,39 @@ input[type="text"][placeholder*="Search"]:focus,
 }
 
 .hero-badge, .highlight-gold {
-    display: none !important;
+    display: none;
 }
 
 .hero-title, .hero-content h1 {
-    font-size: 38px !important;
-    font-weight: 800 !important;
-    color: #ffffff !important;
-    margin-bottom: 10px !important;
-    line-height: 1.2 !important;
+    font-size: 38px;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 10px;
+    line-height: 1.2;
     letter-spacing: -0.5px;
     text-shadow: 0 4px 20px rgba(0,0,0,0.8);
 }
 
 .hero-subtitle, .hero-description, .hero-content p {
-    font-size: 15px !important;
-    color: #94a3b8 !important;
-    line-height: 1.6 !important;
+    font-size: 15px;
+    color: #94a3b8;
+    line-height: 1.6;
     max-width: 680px;
-    margin: 0 auto !important;
+    margin: 0 auto;
     text-shadow: 0 2px 10px rgba(0,0,0,0.8);
 }
-/* End Hero Section */
 
-/* Start Section Header & Grid */
+/* ==============================================
+   5. SECTION HEADER & MAIN CONTENT
+   ============================================== */
 .section-container, .main-content, .courses-section {
     max-width: 1380px;
     margin: 0 auto;
     padding: 40px 48px 60px;
+}
+
+.main-header {
+    margin-bottom: 32px;
 }
 
 .section-title, .main-content h2 {
@@ -261,9 +348,23 @@ input[type="text"][placeholder*="Search"]:focus,
     font-size: 14px;
     margin-bottom: 28px;
 }
-/* End Section Header & Grid */
 
-/* Start Course Cards */
+.category-block {
+    margin-bottom: 48px;
+}
+
+.category-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 3px solid #facc15;
+}
+
+/* ==============================================
+   6. COURSE CARDS & GRID
+   ============================================== */
 .courses-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -273,11 +374,11 @@ input[type="text"][placeholder*="Search"]:focus,
 .course-card {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     background: #131927;
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 16px;
     overflow: hidden;
-    text-decoration: none;
     color: inherit;
     cursor: pointer;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -297,6 +398,7 @@ input[type="text"][placeholder*="Search"]:focus,
     width: 100%;
     height: 160px;
     overflow: hidden;
+    background-color: #1e293b;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -336,11 +438,19 @@ input[type="text"][placeholder*="Search"]:focus,
 .course-card-cta {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 6px;
     padding: 14px 20px 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
     font-size: 13px;
     font-weight: 600;
     color: #facc15;
+    transition: background 0.3s ease;
+}
+
+.course-card:hover .course-card-cta {
+    background: rgba(250, 204, 21, 0.08);
 }
 
 .course-card-cta svg {
@@ -352,9 +462,10 @@ input[type="text"][placeholder*="Search"]:focus,
 .course-card:hover .course-card-cta svg {
     transform: translateX(4px);
 }
-/* End Course Cards */
 
-/* Start Auth Pages (Login & Sign Up) */
+/* ==============================================
+   7. AUTH PAGES (LOGIN & SIGN UP)
+   ============================================== */
 .auth-wrapper, .login-wrapper, .sign-wrapper {
     min-height: calc(100vh - 120px);
     display: flex;
@@ -363,7 +474,6 @@ input[type="text"][placeholder*="Search"]:focus,
     padding: 40px 20px;
     background: radial-gradient(circle at center, rgba(30, 41, 59, 0.4) 0%, rgba(11, 15, 25, 1) 70%);
 }
-
 
 .auth-card, .login-card, .sign-card, .login-container, .signup-container {
     background-color: rgba(19, 25, 39, 0.85);
@@ -431,8 +541,8 @@ input[type="text"]:not(.search-input) {
     outline: none;
     font-size: 13.5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
     will-change: transform, box-shadow;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .form-input:hover,
@@ -456,8 +566,8 @@ input[type="text"]:not(.search-input):focus {
 }
 
 .form-input option {
-    color: #000000 !important;
-    background-color: #ffffff !important;
+    color: #000000;
+    background-color: #ffffff;
 }
 
 .full-width {
@@ -475,8 +585,8 @@ input[type="text"]:not(.search-input):focus {
     cursor: pointer;
     margin-top: 10px;
     box-shadow: 0 4px 15px rgba(250, 204, 21, 0.25);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background-color 0.3s ease;
     will-change: transform, box-shadow;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .btn-submit:hover {
@@ -494,7 +604,6 @@ input[type="text"]:not(.search-input):focus {
 
 .auth-link {
     color: #facc15;
-    text-decoration: none;
     font-weight: 600;
     transition: color 0.2s ease, text-shadow 0.2s ease;
 }
@@ -503,432 +612,18 @@ input[type="text"]:not(.search-input):focus {
     text-decoration: underline;
     text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
 }
-/* End Auth Pages (Login & Sign Up) */
 
-/* Start Footer */
+/* ==============================================
+   8. FOOTER
+   ============================================== */
 .footer {
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 22px 48px;
+    padding: 24px 48px;
     text-align: center;
-    color: #64748b;
-    font-size: 12.5px;
-}
-/* End Footer */
-
-/* Start Responsive Adjustments */
-@media (max-width: 1200px) {
-    .courses-grid { grid-template-columns: repeat(2, 1fr); }
-    .navbar { padding: 12px 24px; }
-    .section-container { padding: 30px 24px; }
-}
-
-@media (max-width: 680px) {
-    .auth-form-grid { grid-template-columns: 1fr; }
-    .full-width { grid-column: span 1; }
-    .courses-grid { grid-template-columns: 1fr; }
-    .hero-title { font-size: 26px !important; }
-    .search-input { width: 160px !important; }
-}
-/* End Responsive Adjustments */
-
-
-
-
-/* Import Modern Clean Font (Plus Jakarta Sans) */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-
-/* Global Reset & Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #0b0f19;
-    color: #f8fafc;
-    line-height: 1.6;
-    overflow-x: hidden;
-}
-
-/* Base Link Reset */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* ==============================================
-   1. NAVBAR STYLES (WITH HOVER SHADOW)
-   ============================================== */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 40px;
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    transition: box-shadow 0.4s ease, border-color 0.4s ease;
-}
-
-.navbar:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(250, 204, 21, 0.1);
-    border-bottom-color: rgba(250, 204, 21, 0.2);
-}
-
-.left-header {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-}
-
-/* Logo with Hover, Shadow & Animation */
-.logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 22px;
-    font-weight: 700;
-    color: #facc15;
-    letter-spacing: -0.3px;
-    cursor: pointer;
-    will-change: transform, filter, text-shadow;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                text-shadow 0.3s ease, 
-                color 0.3s ease;
-}
-
-.logo i, .logo svg {
-    font-size: 18px;
-    color: #facc15;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.logo:hover {
-    color: #ffffff;
-    transform: translateY(-2px);
-    text-shadow: 0 0 12px rgba(250, 204, 21, 0.6), 0 0 25px rgba(250, 204, 21, 0.3);
-}
-
-.logo:hover i, .logo:hover svg {
-    color: #facc15;
-    transform: rotate(12deg) scale(1.15);
-}
-
-/* Search Bar with Hover, Focus, Shadow & Animation */
-.search-container {
-    position: relative;
-    width: 280px;
-}
-
-.search-input {
-    width: 100%;
-    padding: 9px 16px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
-    color: #f8fafc;
-    font-size: 13.5px;
-    outline: none;
-    will-change: transform, box-shadow;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.3s ease, 
-                border-color 0.3s ease, 
-                background-color 0.3s ease;
-}
-
-.search-input::placeholder {
-    color: #64748b;
-}
-
-.search-input:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(250, 204, 21, 0.4);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(250, 204, 21, 0.15);
-}
-
-.search-input:focus {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: #facc15;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 18px rgba(250, 204, 21, 0.3);
-}
-
-/* Navbar Buttons (Login & Sign Up) */
-.right-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.btn-login, .btn-register {
-    display: inline-block;
-    padding: 8px 22px;
-    border-radius: 10px;
-    font-size: 13.5px;
-    font-weight: 600;
-    text-align: center;
-    cursor: pointer;
-    will-change: transform, box-shadow;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.3s ease, 
-                background-color 0.3s ease, 
-                border-color 0.3s ease, 
-                color 0.3s ease !important;
-}
-
-.btn-login {
-    color: #e2e8f0;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.btn-login:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #ffffff;
-    border-color: rgba(250, 204, 21, 0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(250, 204, 21, 0.25);
-}
-
-.btn-register {
-    color: #0b0f19;
-    background-color: #facc15;
-    border: 1px solid #facc15;
-    box-shadow: 0 4px 14px rgba(250, 204, 21, 0.25);
-}
-
-.btn-register:hover {
-    background-color: #eab308;
-    border-color: #eab308;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
-}
-
-
-/* ==============================================
-   2. HERO SECTION STYLES (COMPACT HEIGHT)
-   ============================================== */
-.hero-section {
-    position: relative;
-    width: 100%;
-    min-height: 280px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 35px 20px;
-}
-
-.hero-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: 1;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(11, 15, 25, 0.75) 0%, rgba(11, 15, 25, 0.92) 100%);
-    z-index: 2;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 3;
-    text-align: center;
-    max-width: 860px;
-    margin: 0 auto;
-}
-
-.hero-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 10px;
-    line-height: 1.2;
-    letter-spacing: -0.5px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.hero-subtitle {
-    font-size: 14.5px;
-    font-weight: 400;
-    color: #cbd5e1;
-    line-height: 1.6;
-    max-width: 780px;
-    margin: 0 auto 8px auto;
-    letter-spacing: 0.1px;
-}
-
-.hero-description {
-    font-size: 13.5px;
-    font-weight: 300;
-    color: #94a3b8;
-    line-height: 1.6;
-    max-width: 780px;
-    margin: 0 auto;
-}
-
-
-/* ==============================================
-   3. MAIN CONTENT & COURSES GRID
-   ============================================== */
-.section-container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 24px 24px 60px 24px;
-}
-
-/* Section Header Below Video */
-.main-header {
-    margin-bottom: 32px;
-}
-
-.section-title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #f8fafc;
-    margin-bottom: 4px;
-    letter-spacing: -0.3px;
-}
-
-.section-subtitle {
-    color: #64748b;
-    font-size: 13.5px;
-    font-weight: 400;
-}
-
-/* Category Blocks */
-.category-block {
-    margin-bottom: 48px;
-}
-
-.category-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #f1f5f9;
-    margin-bottom: 20px;
-    padding-left: 12px;
-    border-left: 3px solid #facc15;
-}
-
-/* 4-Columns Responsive Grid */
-.courses-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
-
-/* Course Card */
-.course-card {
-    background: #131b2e;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 14px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.course-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(250, 204, 21, 0.3);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(250, 204, 21, 0.1);
-}
-
-.course-card-media {
-    width: 100%;
-    height: 150px;
-    background-color: #1e293b;
-    overflow: hidden;
-}
-
-.course-card-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.course-card:hover .course-card-media img {
-    transform: scale(1.05);
-}
-
-.course-card-body {
-    padding: 18px;
-    flex-grow: 1;
-}
-
-.course-card-body h3 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #f8fafc;
-    margin-bottom: 8px;
-}
-
-.course-card-body p {
-    font-size: 12.5px;
-    color: #94a3b8;
-    line-height: 1.5;
-    font-weight: 300;
-}
-
-.course-card-cta {
-    padding: 12px 18px;
-    background: rgba(255, 255, 255, 0.02);
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #facc15;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: background 0.3s ease;
-}
-
-.course-card:hover .course-card-cta {
-    background: rgba(250, 204, 21, 0.08);
-}
-
-.course-card-cta svg {
-    width: 14px;
-    height: 14px;
-    transition: transform 0.3s ease;
-}
-
-.course-card:hover .course-card-cta svg {
-    transform: translateX(3px);
-}
-
-
-/* ==============================================
-   4. FOOTER STYLES (WITH HOVER SHADOW)
-   ============================================== */
-.footer {
-    text-align: center;
-    padding: 24px;
     background: #080b12;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    font-size: 13px;
     color: #64748b;
-    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+    font-size: 13px;
+    transition: box-shadow 0.4s ease, border-top-color 0.4s ease;
 }
 
 .footer:hover {
@@ -936,34 +631,67 @@ a {
     border-top-color: rgba(250, 204, 21, 0.2);
 }
 
-
 /* ==============================================
-   5. RESPONSIVE DESIGN (MEDIA QUERIES)
+   9. RESPONSIVE ADJUSTMENTS
    ============================================== */
-@media (max-width: 1024px) {
-    .courses-grid {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 1200px) {
+    .courses-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .navbar { 
+        padding: 12px 24px; 
+    }
+    .section-container { 
+        padding: 30px 24px; 
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
     .navbar {
         padding: 14px 20px;
     }
-
     .left-header {
         gap: 16px;
     }
-
+    .auth-form-grid { 
+        grid-template-columns: 1fr; 
+    }
+    .full-width { 
+        grid-column: span 1; 
+    }
+    .courses-grid { 
+        grid-template-columns: 1fr; 
+    }
+    .hero-title, .hero-content h1 { 
+        font-size: 26px; 
+    }
     .search-container {
         width: 160px;
     }
-
-    .hero-title {
-        font-size: 24px;
+    .search-input,
+    input[type="text"][placeholder*="Search"],
+    .navbar input { 
+        width: 160px; 
     }
-
-    .courses-grid {
-        grid-template-columns: 1fr;
+    .search-input:focus,
+    input[type="text"][placeholder*="Search"]:focus,
+    .navbar input:focus { 
+        width: 180px; 
     }
+    .badge-instructor {
+    background-color: #facc15;
+    color: #0b0f19;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.user-welcome {
+    color: #f8fafc;
+    font-weight: 600;
+    font-size: 14px;
+}
 }
