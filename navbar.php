@@ -26,3 +26,22 @@
         <?php endif; ?>
     </div>
 </div>
+
+
+<!-- Start Navbar -->
+    <nav class="navbar">
+        <div class="left-header">
+            <!-- Logo with Icon AFTER Text -->
+            <a href="#" class="logo">
+                BeCoder <i class="fa-solid fa-graduation-cap"></i>
+            </a>
+            <div class="search-container">
+                <input type="text" placeholder="Search Baccalaureate tracks..." class="search-input">
+            </div>
+        </div>
+        <div class="right-header">
+            <a href="#" class="btn-login">Login</a>
+            <a href="#" class="btn-register">Sign Up</a>
+        </div>
+    </nav>
+    <!-- End Navbar -->
