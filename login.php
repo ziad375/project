@@ -16,17 +16,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($login_id) || empty($password)) {
         $error = "Please enter your email/username and password.";
     } else {
-        // Query by username OR email
-        $stmt = $conn->prepare("SELECT id, first_name, username, password FROM users WHERE username = ? OR email = ?");
+        $stmt = $conn->prepare("SELECT id, first_name, username, password, role FROM users WHERE username = ? OR email = ?");
         $stmt->bind_param("ss", $login_id, $login_id);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($user = $result->fetch_assoc()) {
             if (password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['user_id']    = $user['id'];
                 $_SESSION['first_name'] = $user['first_name'];
-                $_SESSION['username'] = $user['username'];
+                $_SESSION['username']   = $user['username'];
+                $_SESSION['role']       = $user['role']; // Role now properly saved
 
                 header("Location: index.php");
                 exit();
@@ -50,16 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="left-header">
-            <a href="index.html" class="logo">BeCoder 🎓</a>
-        </div>
-
-        <div class="right-header">
-            <a href="login.html" class="btn-login">Log In</a>
-            <a href="register.html" class="btn-register">Sign Up</a>
-        </div>
-    </div>
+     <?php include 'navbar.php'; ?>
 
     <div class="auth-wrapper">
         <div class="auth-card" style="max-width: 450px;">

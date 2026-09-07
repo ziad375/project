@@ -10,24 +10,7 @@ session_start();
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="left-header">
-            <a href="index.html" class="logo">BeCoder 🎓</a>
-            <input type="text" class="search-input" placeholder="Search Baccalaureate tracks...">
-        </div>
-
-       <div class="right-header">
-        <?php if (isset($_SESSION['user_id'])): ?>
-            <span style="color: #fff; margin-right: 15px; font-weight: bold;">
-                Welcome, <?php echo htmlspecialchars($_SESSION['first_name']); ?> 👋
-            </span>
-            <a href="logout.php" class="btn-login">Log Out</a>
-        <?php else: ?> 
-            <a href="login.php" class="btn-login">Log In</a>
-            <a href="register.php" class="btn-register">Sign Up</a>
-        <?php endif; ?>
-        </div>
-    </div>
+        <?php include 'navbar.php'; ?>
 
     <div class="hero-section">
         <video autoplay loop muted playsinline class="hero-video">

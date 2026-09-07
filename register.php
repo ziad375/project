@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email      = trim($_POST['email'] ?? '');
     $password   = $_POST['password'] ?? '';
     $confirm_pw = $_POST['confirm-password'] ?? '';
+    $role       = $_POST['role'] ?? 'student'; // Capture account role
 
     if (empty($first_name) || empty($last_name) || empty($username) || empty($email) || empty($password)) {
         $error = "Please fill in all required fields.";
@@ -30,8 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Hash password securely
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-            $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $first_name, $last_name, $username, $email, $hashed_password);
+            // Insert user with role (student/instructor)
+            $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, username, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $first_name, $last_name, $username, $email, $hashed_password, $role);
 
             if ($stmt->execute()) {
                 header("Location: login.php?registered=1");
@@ -54,16 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <div class="navbar">
-        <div class="left-header">
-            <a href="index.html" class="logo">BeCoder 🎓</a>
-        </div>
-
-        <div class="right-header">
-            <a href="login.html" class="btn-login">Log In</a>
-            <a href="register.html" class="btn-register">Sign Up</a>
-        </div>
-    </div>
+    <?php include 'navbar.php'; ?>
 
     <div class="auth-wrapper">
         <div class="auth-card">
@@ -109,6 +102,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="form-group">
                     <label class="form-label" for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password" name="confirm-password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <div class="form-group full-width">
+                     <label class="form-label" for="role">Account Type</label>
+                     <select name="role" id="role" class="form-input" required>
+                       <option value="student">Student</option>
+                       <option value="instructor">Instructor</option>
+                    </select>
                 </div>
 
                 <!-- Row 4: Submit Button -->
