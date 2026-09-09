@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 
 $input = json_decode(file_get_contents('php://input'), true);
-$username = trim($input['username'] ?? ''); 
+$username = trim($input['username'] ?? '');
 $password = trim($input['password'] ?? '');
 $courseId = intval($input['course_id'] ?? 0);
 
