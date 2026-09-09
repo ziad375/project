@@ -54,7 +54,7 @@ if (isset($_POST['login_btn'])) {
 
     <div class="navbar">
         <div class="left-header">
-            <a href="#" class="logo">
+            <a href="home.php" class="logo">
                 BeCoder <i class="fa-solid fa-graduation-cap"></i>
             </a>
         </div>
