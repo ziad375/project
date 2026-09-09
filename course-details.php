@@ -52,35 +52,125 @@ $isStudentLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
             
 
             <!-- First content box: course details and overview container -->
-            <section class="content-box course-info-section">
-                <h1 id="courseTitle">Loading Course...</h1>
-                <span id="courseCategory" class="badge">Loading</span>
+        <section class="content-box course-info-section">
 
-                <!-- Horizontal layout divider element -->
-                <hr class="divider">
+            <h1 id="courseTitle">Loading Course...</h1>
 
-                <!-- Course overview textual information section -->
-                <div class="overview-box">
-                    <h2>Course Overview</h2>
-                    <p id="courseDescription">Please wait while course details are being fetched from the database.</p>
+            <span id="courseCategory" class="badge">Loading</span>
+
+            <hr class="divider">
+
+            <!-- Course Overview -->
+            <div class="overview-box">
+                <h2>Course Overview</h2>
+
+                <p id="courseDescription">
+                    Please wait while course details are being fetched from the database.
+                </p>
+            </div>
+
+
+            <!-- ================= VIDEO PLAYER ================= -->
+
+            <div class="video-section" style="margin-top: 25px;">
+
+                <h2>
+                    <i class="fa-solid fa-circle-play"></i>
+                    Video Lesson
+                </h2>
+
+                <!-- MP4 Video -->
+                <video
+                    id="mainVideo"
+                    controls
+                    preload="metadata"
+                    style="
+                        width: 100%;
+                        max-width: 900px;
+                        display: none;
+                        margin-top: 15px;
+                        border-radius: 10px;
+                        background: #000;
+                    "
+                >
+                    <source id="videoSource" src="" type="video/mp4">
+
+                    Your browser does not support the video tag.
+                </video>
+
+
+                <!-- YouTube Video -->
+                <iframe
+                    id="youtubeVideo"
+                    style="
+                        width: 100%;
+                        max-width: 900px;
+                        height: 500px;
+                        display: none;
+                        margin-top: 15px;
+                        border: none;
+                        border-radius: 10px;
+                    "
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+
+
+                <!-- Message shown before selecting a lesson -->
+                <div
+                    id="videoMessage"
+                    style="
+                        margin-top: 15px;
+                        padding: 25px;
+                        text-align: center;
+                        background: rgba(255,255,255,0.05);
+                        border-radius: 10px;
+                    "
+                >
+                    <i class="fa-solid fa-video"></i>
+                    <p>Select a lesson below to start watching.</p>
                 </div>
 
-                <!-- Lessons list container target dynamically rendered by JS -->
-                <div class="lessons-section">
-                    <h2><i class="fa-solid fa-list-check"></i> Course Lessons</h2>
-                    <div id="lessonsListContainer" class="lessons-list">
-                        <p class="loading-lessons">Loading lessons...</p>
-                    </div>
+            </div>
+
+
+            <!-- ================= LESSONS ================= -->
+
+            <div class="lessons-section">
+
+                <h2>
+                    <i class="fa-solid fa-list-check"></i>
+                    Course Lessons
+                </h2>
+
+                <div id="lessonsListContainer" class="lessons-list">
+
+                    <p class="loading-lessons">
+                        Loading lessons...
+                    </p>
+
                 </div>
 
-                <!-- Instructor bio and details information section -->
-                <div class="instructor-box">
-                    <h2>Instructor Bio</h2>
-                    <p id="instructorName">Instructor: Loading...</p>
-                    <p id="instructorBio">Expert Instructor</p>
-                </div>
-            </section>
+            </div>
 
+
+            <!-- ================= INSTRUCTOR ================= -->
+
+            <div class="instructor-box">
+
+                <h2>Instructor Bio</h2>
+
+                <p id="instructorName">
+                    Instructor: Loading...
+                </p>
+
+                <p id="instructorBio">
+                    Expert Instructor
+                </p>
+
+            </div>
+
+        </section>
         </div>
 
     </main>

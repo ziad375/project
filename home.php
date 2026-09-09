@@ -20,7 +20,15 @@ session_start();
                 BeCoder <i class="fa-solid fa-graduation-cap"></i>
             </a>
             <div class="search-container">
-                <input type="text" placeholder="Search Baccalaureate tracks..." class="search-input">
+
+                <input
+                    type="text"
+                    id="courseSearch"
+                    placeholder="Search courses..."
+                    class="search-input"
+                    autocomplete="off"
+                >
+
             </div>
         </div>
         <div class="right-header">
@@ -351,5 +359,113 @@ session_start();
         <p>All Rights Reserved &copy; 2026</p>
     </footer>
 
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const searchInput =
+                document.getElementById('courseSearch');
+
+            const courseCards =
+                document.querySelectorAll('.course-card');
+
+            const categoryBlocks =
+                document.querySelectorAll('.category-block');
+
+
+            if (!searchInput) {
+                return;
+            }
+
+
+            searchInput.addEventListener('input', function () {
+
+                const searchText =
+                    searchInput.value.trim().toLowerCase();
+
+
+                // ==========================================
+                // CHECK EVERY COURSE
+                // ==========================================
+
+                courseCards.forEach(function (card) {
+
+                    const title =
+                        card.querySelector('h3')?.textContent
+                            .toLowerCase() || '';
+
+                    const description =
+                        card.querySelector('p')?.textContent
+                            .toLowerCase() || '';
+
+
+                    const matches =
+                        title.includes(searchText) ||
+                        description.includes(searchText);
+
+
+                    if (matches) {
+
+                        card.style.display = '';
+
+                    } else {
+
+                        card.style.display = 'none';
+
+                    }
+
+                });
+
+
+                // ==========================================
+                // HIDE EMPTY CATEGORIES
+                // ==========================================
+
+                categoryBlocks.forEach(function (category) {
+
+                    const visibleCards =
+                        category.querySelectorAll(
+                            '.course-card:not([style*="display: none"])'
+                        );
+
+
+                    if (visibleCards.length === 0) {
+
+                        category.style.display = 'none';
+
+                    } else {
+
+                        category.style.display = '';
+
+                    }
+
+                });
+
+
+                // ==========================================
+                // SHOW ALL WHEN SEARCH IS EMPTY
+                // ==========================================
+
+                if (searchText === '') {
+
+                    categoryBlocks.forEach(function (category) {
+
+                        category.style.display = '';
+
+                    });
+
+                    courseCards.forEach(function (card) {
+
+                        card.style.display = '';
+
+                    });
+
+                }
+
+            });
+
+        });
+
+    </script>
 </body>
 </html>
