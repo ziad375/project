@@ -50,24 +50,8 @@ $isStudentLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
         <!-- Grid wrapper organizing the content boxes -->
         <div class="details-wrapper">
             
-            <!-- First content box: video preview player container -->
-            <section class="content-box video-player-wrapper">
-                <h3><i class="fa-solid fa-play"></i> Course Preview Video</h3>
-                
-                <!-- Overlay wrapper containing the video start button with login check attribute -->
-                <div id="videoOverlay" class="video-overlay">
-                    <button id="startVideoBtn" class="btn-start-video" data-logged="<?php echo $isStudentLoggedIn; ?>">Start Video</button>
-                </div>
-                
-                <!-- Hidden HTML5 video player element filling 100% -->
-                <video id="mainVideo" controls hidden>
-                    <!-- Unified video source for all courses -->
-                    <source id="videoSource" src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                    Your browser does not support video playback.
-                </video>
-            </section>
 
-            <!-- Second content box: course details and overview container -->
+            <!-- First content box: course details and overview container -->
             <section class="content-box course-info-section">
                 <h1 id="courseTitle">Loading Course...</h1>
                 <span id="courseCategory" class="badge">Loading</span>
