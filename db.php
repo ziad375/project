@@ -1,9 +1,7 @@
 <?php
-$host = "localhost"; $user = "root"; $pass = ""; $dbname = "becoder_db";
-
-$conn = new mysqli($host, $user, $pass, $dbname);
+$conn = new mysqli('localhost', 'root', '', 'becoder_db');
 
 if ($conn->connect_error) {
-    die("Database Connection Failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>

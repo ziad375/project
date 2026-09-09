@@ -1,88 +1,100 @@
 <?php
 session_start();
-require_once 'db.php';
+include 'db.php';
 
-$error = '';
-$success = '';
+$error_msg = "";
+$success_msg = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $first_name = trim($_POST['firstname'] ?? '');
-    $last_name  = trim($_POST['lastname'] ?? '');
-    $username   = trim($_POST['username'] ?? '');
-    $email      = trim($_POST['email'] ?? '');
-    $password   = $_POST['password'] ?? '';
-    $confirm_pw = $_POST['confirm-password'] ?? '';
-    $role       = $_POST['role'] ?? 'student'; // Capture account role
+    $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
+    $last_name = mysqli_real_escape_string($conn, $_POST['last_name']);
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm-password'];
+    $role = 'student'; 
 
-    if (empty($first_name) || empty($last_name) || empty($username) || empty($email) || empty($password)) {
-        $error = "Please fill in all required fields.";
-    } elseif ($password !== $confirm_pw) {
-        $error = "Passwords do not match.";
+    // Validate password confirmation match
+    if ($password !== $confirm_password) {
+        $error_msg = "Passwords do not match!";
     } else {
-        // Check if username or email already exists
-        $checkStmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-        $checkStmt->bind_param("ss", $username, $email);
-        $checkStmt->execute();
-        $checkStmt->store_result();
+        // Verify email or username are not already registered
+        $check_query = "SELECT * FROM users WHERE email = '$email' OR username = '$username' LIMIT 1";
+        $check_result = mysqli_query($conn, $check_query);
 
-        if ($checkStmt->num_rows > 0) {
-            $error = "Username or Email is already registered.";
+        if (mysqli_num_rows($check_result) > 0) {
+            $error_msg = "Username or Email already exists!";
         } else {
-            // Hash password securely
-            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-            // Insert user with role (student/instructor)
-            $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, username, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $first_name, $last_name, $username, $email, $hashed_password, $role);
-
-            if ($stmt->execute()) {
-                header("Location: login.php?registered=1");
-                exit();
+            // Save new user into database
+            $sql = "INSERT INTO users (first_name, last_name, username, email, password, role) 
+                    VALUES ('$first_name', '$last_name', '$username', '$email', '$password', '$role')";
+            
+            if (mysqli_query($conn, $sql)) {
+                $success_msg = "Account created successfully! You can now <a href='login.php'>Log In</a>.";
             } else {
-                $error = "Something went wrong. Please try again.";
+                $error_msg = "Something went wrong, please try again.";
             }
-            $stmt->close();
         }
-        $checkStmt->close();
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <title>Sign Up - BeCoder</title>
-    <link rel="stylesheet" href="css/system.css">
+    <link rel="stylesheet" href="system.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <?php include 'navbar.php'; ?>
+    <div class="navbar">
+        <div class="left-header">
+            <a href="home.php" class="logo">
+                <i class="fa-solid fa-graduation-cap logo-icon"></i>
+                <span class="logo-text">BeCoder</span>
+            </a>
+        </div>
+
+        <div class="right-header">
+            <a href="login.php" class="btn-login">Log In</a>
+            <a href="register.php" class="btn-register">Sign Up</a>
+        </div>
+    </div>
 
     <div class="auth-wrapper">
         <div class="auth-card">
             <div class="auth-header">
-                 <?php if (!empty($error)): ?>
-                <p style="color: #ff4d4d; background: #ffe6e6; padding: 10px; border-radius: 5px; margin-top: 10px; text-align: center;">
-                <?php echo $error; ?> </p>  
-                <?php endif; ?>     
                 <h1 class="auth-title">Create Your Account</h1>
                 <p class="auth-subtitle">Join BeCoder & start your coding journey</p>
             </div>
 
-           <form class="auth-form-grid" action="register.php" method="POST">
+            <!-- Error / Success Messages -->
+            <?php if (!empty($error_msg)): ?>
+                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-size: 14px;">
+                    <?php echo $error_msg; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($success_msg)): ?>
+                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid #22c55e; color: #22c55e; padding: 10px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-size: 14px;">
+                    <?php echo $success_msg; ?>
+                </div>
+            <?php endif; ?>
+
+            <form class="auth-form-grid" action="register.php" method="POST">
                 
-                <!-- Row 1: First Name & Last Name -->
                 <div class="form-group">
-                    <label class="form-label" for="firstname">First Name</label>
-                    <input type="text" id="firstname" name="firstname" class="form-input" placeholder="e.g. Hossam" required>
+                    <label class="form-label" for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" class="form-input" placeholder="e.g. Hossam" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="lastname">Last Name</label>
-                    <input type="text" id="lastname" name="lastname" class="form-input" placeholder="e.g. Ahmed" required>
+                    <label class="form-label" for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" class="form-input" placeholder="e.g. Ahmed" required>
                 </div>
 
-                <!-- Row 2: Username & Email -->
                 <div class="form-group">
                     <label class="form-label" for="username">Username</label>
                     <input type="text" id="username" name="username" class="form-input" placeholder="hossam_20" required>
@@ -93,7 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="email" id="email" name="email" class="form-input" placeholder="name@example.com" required>
                 </div>
 
-                <!-- Row 3: Password & Confirm Password -->
                 <div class="form-group">
                     <label class="form-label" for="password">Password</label>
                     <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required>
@@ -103,15 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label class="form-label" for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password" name="confirm-password" class="form-input" placeholder="••••••••" required>
                 </div>
-                <div class="form-group full-width">
-                     <label class="form-label" for="role">Account Type</label>
-                     <select name="role" id="role" class="form-input" required>
-                       <option value="student">Student</option>
-                       <option value="instructor">Instructor</option>
-                    </select>
-                </div>
 
-                <!-- Row 4: Submit Button -->
                 <div class="full-width">
                     <button type="submit" class="btn-submit" style="width: 100%;">Create Account</button>
                 </div>
@@ -119,13 +122,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
 
             <div class="auth-footer">
-                Already have an account? <a href="login.html" class="auth-link">Log In</a>
+                Already have an account? <a href="login.php" class="auth-link">Log In</a>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <p>&copy; 2026 BeCoder 🎓 Platform. Designed for Egyptian Baccalaureate Students in Programming & AI.</p>
+        <p>&copy; 2026 BeCoder 🎓 Platform. Designed for Egyptian Baccalaureate Students in Programming & AI. 🇪🇬</p>
     </div>
 
 </body>
