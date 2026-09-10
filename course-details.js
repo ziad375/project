@@ -51,39 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
             </div>
         `).join('');
-
-        // Attach click handlers to dynamically play embedded videos or direct MP4 files
-        container.querySelectorAll('.watch-link-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const videoUrl = btn.getAttribute('data-url');
-                const mainVideo = document.getElementById('mainVideo');
-                const videoSource = document.getElementById('videoSource');
-                const videoOverlay = document.getElementById('videoOverlay');
-
-                // If it is an MP4 video stream, update the main video player and play directly
-                if (videoUrl.endsWith('.mp4') || videoUrl.includes('w3schools')) {
-                    e.preventDefault();
-                    if (videoSource && mainVideo) {
-                        videoSource.src = videoUrl;
-                        mainVideo.load();
-                        if (videoOverlay) videoOverlay.style.display = 'none';
-                        mainVideo.hidden = false;
-                        mainVideo.play();
-                        
-                        mainVideo.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }
-            });
-        });
     }
 
     // 2. Modal elements selection
     const addLessonBtn = document.getElementById('addLessonBtn');
     const addLessonModal = document.getElementById('addLessonModal');
     const closeModalBtn = document.getElementById('closeModalBtn');
-    const startVideoBtn = document.getElementById('startVideoBtn');
-    const videoOverlay = document.getElementById('videoOverlay');
-    const mainVideo = document.getElementById('mainVideo');
     const addLessonForm = document.getElementById('addLessonForm');
 
     // 3. Handle modal display
@@ -106,90 +79,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. Video protection logic
-    if (startVideoBtn) {
-        startVideoBtn.addEventListener('click', () => {
-            const isLogged = startVideoBtn.getAttribute('data-logged') === 'true';
+    // 4. Render Functions with Labels and Placeholders
+    function showInstructorAuthStep() {
+        if (!addLessonForm) return;
+        
+        addLessonForm.innerHTML = `
+            <h3 class="dynamic-form-title">Instructor Authentication</h3>
+            <p class="dynamic-form-subtitle">Please enter your credentials to manage lessons.</p>
             
-            if (!isLogged) {
-                if (addLessonModal) {
-                    addLessonModal.style.display = 'flex';
-                    showStudentAuthStep();
-                }
-                return;
-            }
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="instUser" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Instructor Username</label>
+                <input type="text" id="instUser" placeholder="e.g. john_doe" required class="form-styled-input" style="width: 100%; padding: 8px;">
+            </div>
 
-            if (videoOverlay) videoOverlay.style.display = 'none';
-            if (mainVideo) {
-                mainVideo.hidden = false;
-                mainVideo.play();
-            }
-        });
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="instPass" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Instructor Password</label>
+                <input type="password" id="instPass" placeholder="Enter your instructor password" required class="form-styled-input" style="width: 100%; padding: 8px;">
+            </div>
+
+            <button type="button" id="verifyInstBtn" class="form-styled-btn">Verify & Continue</button>
+        `;
     }
 
- // 5. Render Functions with Labels and Placeholders
-function showStudentAuthStep() {
-    if (!addLessonForm) return;
-    
-    addLessonForm.innerHTML = `
-        <h3 class="dynamic-form-title">Student Login Required</h3>
-        <p class="dynamic-form-subtitle">Please enter your credentials to watch the video.</p>
-        
-        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-            <label for="studentUser" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Username</label>
-            <input type="text" id="studentUser" placeholder="Enter your username" required class="form-styled-input" style="width: 100%; padding: 8px;">
-        </div>
+    function showAddLessonStep() {
+        if (!addLessonForm) return;
 
-        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-            <label for="studentPass" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Password</label>
-            <input type="password" id="studentPass" placeholder="Enter your password" required class="form-styled-input" style="width: 100%; padding: 8px;">
-        </div>
+        addLessonForm.innerHTML = `
+            <h3 class="dynamic-form-title">Add New Lesson</h3>
+            
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="lessonTitleInput" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Lesson Title</label>
+                <input type="text" id="lessonTitleInput" placeholder="e.g. Introduction to Variables" required class="form-styled-input" style="width: 100%; padding: 8px;">
+            </div>
 
-        <button type="button" id="verifyStudentBtn" class="form-styled-btn">Login & Watch</button>
-    `;
-}
+            <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                <label for="lessonUrlInput" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Video URL (.mp4 or link)</label>
+                <input type="url" id="lessonUrlInput" placeholder="https://example.com/video.mp4" required class="form-styled-input" style="width: 100%; padding: 8px;">
+            </div>
 
-function showInstructorAuthStep() {
-    if (!addLessonForm) return;
-    
-    addLessonForm.innerHTML = `
-        <h3 class="dynamic-form-title">Instructor Authentication</h3>
-        <p class="dynamic-form-subtitle">Please enter your credentials to manage lessons.</p>
-        
-        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-            <label for="instUser" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Instructor Username</label>
-            <input type="text" id="instUser" placeholder="e.g. john_doe" required class="form-styled-input" style="width: 100%; padding: 8px;">
-        </div>
+            <button type="submit" id="saveLessonBtn" class="form-styled-btn">Save Lesson</button>
+        `;
+    }
 
-        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-            <label for="instPass" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Instructor Password</label>
-            <input type="password" id="instPass" placeholder="Enter your instructor password" required class="form-styled-input" style="width: 100%; padding: 8px;">
-        </div>
-
-        <button type="button" id="verifyInstBtn" class="form-styled-btn">Verify & Continue</button>
-    `;
-}
-
-function showAddLessonStep() {
-    if (!addLessonForm) return;
-
-    addLessonForm.innerHTML = `
-        <h3 class="dynamic-form-title">Add New Lesson</h3>
-        
-        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-            <label for="lessonTitleInput" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Lesson Title</label>
-            <input type="text" id="lessonTitleInput" placeholder="e.g. Introduction to Variables" required class="form-styled-input" style="width: 100%; padding: 8px;">
-        </div>
-
-        <div class="form-group" style="margin-bottom: 15px; text-align: left;">
-            <label for="lessonUrlInput" style="display: block; font-weight: bold; margin-bottom: 5px; color: #fff;">Video URL (.mp4 or link)</label>
-            <input type="url" id="lessonUrlInput" placeholder="https://example.com/video.mp4" required class="form-styled-input" style="width: 100%; padding: 8px;">
-        </div>
-
-        <button type="submit" id="saveLessonBtn" class="form-styled-btn">Save Lesson</button>
-    `;
-}
-    // 6. Global Event Delegation for Dynamic Form Buttons
+    // 5. Global Event Delegation for Dynamic Form Buttons
     if (addLessonForm) {
         addLessonForm.addEventListener('click', async (e) => {
             if (e.target && e.target.id === 'verifyInstBtn') {
@@ -219,26 +151,9 @@ function showAddLessonStep() {
                     } else {
                         alert(result.message);
                     }
-                } catch (err) {
+                } (err) {
                     console.error('Verification error:', err);
                     alert('Server error verifying course ownership.');
-                }
-            }
-
-            if (e.target && e.target.id === 'verifyStudentBtn') {
-                const user = document.getElementById('studentUser').value;
-                const pass = document.getElementById('studentPass').value;
-
-                if (user && pass) {
-                    alert('Logged in successfully!');
-                    addLessonModal.style.display = 'none';
-                    if (videoOverlay) videoOverlay.style.display = 'none';
-                    if (mainVideo) {
-                        mainVideo.hidden = false;
-                        mainVideo.play();
-                    }
-                } else {
-                    alert('Please fill in all fields!');
                 }
             }
         });
@@ -246,7 +161,7 @@ function showAddLessonStep() {
         // Save lesson to database on form submission
         addLessonForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const titleInput = document.getElementById('lessonTitleInput');
+            const titleTitle = document.getElementById('lessonTitleInput');
             const urlInput = document.getElementById('lessonUrlInput');
 
             if (titleInput && urlInput && titleInput.value && urlInput.value) {
