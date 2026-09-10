@@ -12,7 +12,7 @@ if ($conn->connect_error) {
     echo json_encode(['status' => 'error', 'message' => 'Database connection failed']);
     exit();
 }
-
+        
 $input = json_decode(file_get_contents('php://input'), true);
 $username = trim($input['username'] ?? '');
 $password = trim($input['password'] ?? '');

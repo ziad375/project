@@ -21,7 +21,7 @@ $isStudentLoggedIn = isset($_SESSION['user_id']) ? 'true' : 'false';
 <body>
 
     <!-- Main navigation bar container -->
-    <header class="main-header">
+    <header class="main-header">    
         <!-- Inner wrapper for logo and header actions -->
         <div class="nav-container">
             <!-- Brand logo link routing back to home -->
